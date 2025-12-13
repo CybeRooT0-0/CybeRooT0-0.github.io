@@ -87,10 +87,23 @@
 
         .sidebar:hover .label {
             opacity: 1;
+            transform: translateX(0);
+        }
+
+        .logo {
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 0 15px;
+            width: 100%;
         }
 
         .logo-icon {
             font-size: 1.8em;
+            color: var(--primary);
+            flex-shrink: 0;
+        }
 
         .logo-text {
             font-size: 1.2em;
