@@ -177,6 +177,769 @@
             transition: all 0.3s ease;
         }
 
+        .ramworld .icon {
+            background: rgba(14, 165, 233, 0.2);
+            color: var(--primary);
+        }
+
+        .python .icon {
+            background: rgba(49, 120, 198, 0.2);
+            color: #3776ab;
+        }
+
+        .linux .icon {
+            background: rgba(240, 81, 51, 0.2);
+            color: #f05135;
+        }
+
+        .hacker .icon {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .friends .icon {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+
+        .label {
+            font-size: 1em;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s ease 0.1s;
+        }
+
+        /* 主内容区域 */
+        .main-content {
+            margin-left: 80px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* 欢迎文本 */
+        .welcome-container {
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .welcome-text {
+            font-size: 5em;
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            position: relative;
+            text-shadow: 0 0 30px var(--glow);
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* 浮动元素 */
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-element {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(14, 165, 233, 0.1);
+            filter: blur(40px);
+            animation: float 20s infinite linear;
+        }
+
+        .floating-element:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            top: 10%;
+            left: 10%;
+            animation-duration: 25s;
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .floating-element:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            top: 60%;
+            left: 70%;
+            animation-duration: 20s;
+            animation-delay: -5s;
+        }
+
+        .floating-element:nth-child(3) {
+            width: 150px;
+            height: 150px;
+            top: 20%;
+            left: 80%;
+            animation-duration: 30s;
+            animation-delay: -10s;
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        /* 装饰线条 */
+        .decor-line {
+            position: absolute;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            opacity: 0.3;
+        }
+
+        .decor-line.horizontal {
+            width: 100%;
+            left: 0;
+        }
+
+        .decor-line.vertical {
+            width: 1px;
+            height: 100%;
+            top: 0;
+        }
+
+        .line-1 {
+            top: 30%;
+        }
+
+        .line-2 {
+            bottom: 30%;
+        }
+
+        .line-3 {
+            left: 30%;
+        }
+
+        .line-4 {
+            right: 30%;
+        }
+
+        /* 底部信息 */
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--gray);
+            font-size: 0.9em;
+            text-align: center;
+            width: 100%;
+            z-index: 10;
+        }
+
+        /* 友情链接卡片 */
+        .acmer-card {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 280px;
+            padding: 25px 30px;
+            background: rgba(30, 41, 59, 0.85);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            border-radius: 16px;
+            text-decoration: none;
+            color: var(--light);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+            z-index: 20;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 动画 */
+        @keyframes glow {
+            0% {
+                text-shadow: 0 0 10px var(--glow), 0 0 20px var(--glow);
+            }
+            100% {
+                text-shadow: 0 0 20px var(--glow), 0 0 40px rgba(139, 92, 246, 0.3);
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(30px, 30px) rotate(90deg);
+            }
+            50% {
+                transform: translate(0, 60px) rotate(180deg);
+            }
+            75% {
+                transform: translate(-30px, 30px) rotate(270deg);
+            }
+            100% {
+                transform: translate(0, 0) rotate(360deg);
+            }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 60px;
+            }
+            
+            .main-content {
+                margin-left: 60px;
+            }
+            
+            .welcome-text {
+                font-size: 3.5em;
+            }
+            
+            .sidebar:hover {
+                width: 180px;
+            }
+            
+            .acmer-card {
+                width: 250px;
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .welcome-text {
+                font-size: 2.5em;
+            }
+            
+            .subtitle {
+                font-size: 1em;
+                padding: 0 20px;
+            }
+            
+            .acmer-card {
+                width: 220px;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 背景效果 -->
+    <div class="bg-effect"></div>
+    <div class="grid-bg"></div>
+    
+    <!-- 侧边栏 -->
+    <aside class="sidebar">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-terminal"></i>
+            </div>
+            <div class="logo-text">RamWorld</div>
+        </div>
+        
+        <div class="nav-items">
+            <div class="nav-item ramworld active" data-target="ramworld">
+                <div class="icon">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="label">RamWorld</div>
+            </div>
+            
+            <div class="nav-item python" data-target="python">
+                <div class="icon">
+                    <i class="fab fa-python"></i>
+                </div>
+                <div class="label">Python</div>
+            </div>
+            
+            <div class="nav-item linux" data-target="linux">
+                <div class="icon">
+                    <i class="fab fa-linux"></i>
+                </div>
+                <div class="label">Linux</div>
+            </div>
+            
+            <div class="nav-item hacker" data-target="hacker">
+                <div class="icon">
+                    <i class="fas fa-user-secret"></i>
+                </div>
+                <div class="label">Hacker</div>
+            </div>
+            
+            <div class="nav-item friends" data-target="friends">
+                <div class="icon">
+                    <i class="fas fa-user-friends"></i>
+                </div>
+                <div class="label">友情链接</div>
+            </div>
+        </div>
+    </aside>
+    
+    <!-- 主内容区域 -->
+    <main class="main-content">
+        <!-- 装饰线条 -->
+        <div class="decor-line horizontal line-1"></div>
+        <div class="decor-line horizontal line-2"></div>
+        <div class="decor-line vertical line-3"></div>
+        <div class="decor-line vertical line-4"></div>
+        
+        <!-- 浮动元素 -->
+        <div class="floating-elements">
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+        </div>
+        
+        <!-- 欢迎文本 -->
+        <div class="welcome-container">
+            <h1 class="welcome-text">Hello,<br>Welcome to RamWorld</h1>
+            <p class="subtitle">探索技术世界，记录学习历程，分享编程心得</p>
+        </div>
+        
+        <!-- 底部信息 -->
+        <div class="footer">
+            <p>探索侧边标签，进入不同领域</p>
+        </div>
+    </main>
+
+    <script>
+        // 移除友情链接卡片的函数
+        function removeFriendsCard() {
+            const existingCard = document.querySelector('.acmer-card');
+            if (existingCard) {
+                existingCard.remove();
+            }
+        }
+
+        // 创建友情链接卡片的函数
+        function createFriendsCard() {
+            // 创建ACMer链接卡片
+            const acmerCard = document.createElement('a');
+            acmerCard.href = 'https://voidtransient.github.io/';
+            acmerCard.target = '_blank';
+            acmerCard.className = 'acmer-card';
+            
+            // 计算位置：在欢迎文字下方
+            const welcomeContainer = document.querySelector('.welcome-container');
+            const welcomeRect = welcomeContainer.getBoundingClientRect();
+            const cardTop = welcomeRect.bottom + 40;
+            
+            acmerCard.style.top = `${cardTop}px`;
+            
+            // 卡片内容
+            acmerCard.innerHTML = `
+                <div style="
+                    display: flex;
+                    align-items: center;
+                    gap: 15px;
+                    margin-bottom: 12px;
+                ">
+                    <div style="
+                        width: 50px;
+                        height: 50px;
+                        background: linear-gradient(135deg, 
+                            rgba(14, 165, 233, 0.15), 
+                            rgba(139, 92, 246, 0.15)
+                        );
+                        border-radius: 12px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border: 1px solid rgba(14, 165, 233, 0.2);
+                    ">
+                        <div style="
+                            font-size: 1.8em;
+                            background: linear-gradient(45deg, #0ea5e9, #8b5cf6);
+                            -webkit-background-clip: text;
+                            -webkit-text-fill-color: transparent;
+                        ">⚡</div>
+                    </div>
+                    <div style="text-align: left;">
+                        <div style="
+                            font-size: 1.3em;
+                            font-weight: 600;
+                            background: linear-gradient(45deg, #0ea5e9, #8b5cf6);
+                            -webkit-background-clip: text;
+                            -webkit-text-fill-color: transparent;
+                        ">VoidTransient</div>
+                        <div style="
+                            color: #94a3b8;
+                            font-size: 0.85em;
+                            margin-top: 4px;
+                        ">ACMer • 算法选手</div>
+                    </div>
+                </div>
+                
+                <div style="
+                    color: #cbd5e1;
+                    font-size: 0.95em;
+                    line-height: 1.5;
+                    margin-bottom: 15px;
+                    padding: 12px;
+                    background: rgba(14, 165, 233, 0.05);
+                    border-radius: 10px;
+                    border: 1px solid rgba(14, 165, 233, 0.1);
+                ">
+                    "淮扬菜"谐音大佬<br>点击访问主页 →
+                </div>
+                
+                <div style="
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 8px;
+                    color: #0ea5e9;
+                    font-weight: 500;
+                    font-size: 0.95em;
+                    padding: 8px 20px;
+                    border: 1px solid rgba(14, 165, 233, 0.3);
+                    border-radius: 10px;
+                    background: rgba(14, 165, 233, 0.1);
+                    transition: all 0.3s ease;
+                ">
+                    <span>访问主页</span>
+                    <i class="fas fa-external-link-alt" style="font-size: 0.9em;"></i>
+                </div>
+            `;
+            
+            // 悬浮效果
+            acmerCard.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateX(-50%) translateY(-5px)';
+                this.style.boxShadow = '0 20px 40px rgba(14, 165, 233, 0.2)';
+                this.style.borderColor = 'rgba(14, 165, 233, 0.5)';
+                this.style.background = 'rgba(30, 41, 59, 0.95)';
+                
+                const arrow = this.querySelector('.fa-external-link-alt');
+                if (arrow) {
+                    arrow.style.transform = 'translateX(3px) rotate(10deg)';
+                }
+            });
+            
+            acmerCard.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateX(-50%) translateY(0)';
+                this.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.2)';
+                this.style.borderColor = 'rgba(14, 165, 233, 0.3)';
+                this.style.background = 'rgba(30, 41, 59, 0.85)';
+                
+                const arrow = this.querySelector('.fa-external-link-alt');
+                if (arrow) {
+                    arrow.style.transform = 'translateX(0) rotate(0deg)';
+                }
+            });
+            
+            // 点击效果
+            acmerCard.addEventListener('mousedown', function() {
+                this.style.transform = 'translateX(-50%) translateY(-2px) scale(0.98)';
+            });
+            
+            acmerCard.addEventListener('mouseup', function() {
+                this.style.transform = 'translateX(-50%) translateY(-5px) scale(1)';
+            });
+            
+            // 添加到页面
+            document.querySelector('.main-content').appendChild(acmerCard);
+            
+            // 窗口大小变化时重新计算位置
+            const repositionCard = () => {
+                const welcomeRect = welcomeContainer.getBoundingClientRect();
+                acmerCard.style.top = `${welcomeRect.bottom + 40}px`;
+            };
+            
+            window.addEventListener('resize', repositionCard);
+        }
+
+        // 侧边栏导航交互
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                // 移除所有active类
+                document.querySelectorAll('.nav-item').forEach(nav => {
+                    nav.classList.remove('active');
+                });
+                
+                // 给当前点击的项添加active类
+                this.classList.add('active');
+                
+                // 获取目标区域
+                const target = this.getAttribute('data-target');
+                
+                // 根据目标显示不同内容
+                const welcomeText = document.querySelector('.welcome-text');
+                const subtitle = document.querySelector('.subtitle');
+                
+                switch(target) {
+                    case 'ramworld':
+                        welcomeText.innerHTML = "Hello,<br>Welcome to RamWorld";
+                        subtitle.textContent = "探索技术世界，记录学习历程，分享编程心得";
+                        removeFriendsCard();
+                        break;
+                        
+                    case 'python':
+                        welcomeText.innerHTML = "Python<br>编程世界";
+                        subtitle.textContent = "带PY不老铁";
+                        removeFriendsCard();
+                        break;
+                        
+                    case 'linux':
+                        welcomeText.innerHTML = "Linux<br>系统世界";
+                        subtitle.textContent = "我有个朋友，不玩linux，然后四级挂了";
+                        removeFriendsCard();
+                        break;
+                        
+                    case 'hacker':
+                        welcomeText.innerHTML = "Hacker<br>安全领域";
+                        subtitle.textContent = "你也想成为黑调的迪客？";
+                        removeFriendsCard();
+                        break;
+                        
+                    case 'friends':
+                        welcomeText.innerHTML = "友情链接";
+                        subtitle.textContent = "算法竞赛选手的个人空间";
+                        removeFriendsCard();
+                        createFriendsCard();
+                        break;
+                        
+                    default:
+                        welcomeText.innerHTML = "Hello,<br>Welcome to RamWorld";
+                        subtitle.textContent = "探索技术世界，记录学习历程，分享编程心得";
+                        removeFriendsCard();
+                }
+            });
+        });
+        
+        // 鼠标移动效果
+        document.addEventListener('mousemove', (e) => {
+            const floatingElements = document.querySelectorAll('.floating-element');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            floatingElements.forEach((el, index) => {
+                const speed = 0.5 + (index * 0.2);
+                const xMove = (x - 0.5) * 20 * speed;
+                const yMove = (y - 0.5) * 20 * speed;
+                
+                el.style.transform = `translate(${xMove}px, ${yMove}px)`;
+            });
+        });
+        
+        // 控制台欢迎信息
+        console.log('%c🚀 欢迎来到 RamWorld！', 'color: #0ea5e9; font-size: 18px; font-weight: bold;');
+        console.log('%c探索侧边标签，进入不同的技术领域', 'color: #8b5cf6;');
+        
+        // 页面加载动画
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.8s ease';
+            
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+            
+            // 为侧边栏项目添加延迟动画
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateX(-20px)';
+                item.style.transition = `opacity 0.5s ease ${index * 0.1}s, transform 0.5s ease ${index * 0.1}s`;
+                
+                setTimeout(() => {
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateX(0)';
+                }, 500 + (index * 100));
+            });
+        });
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RamWorld | 个人空间</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0ea5e9;
+            --secondary: #8b5cf6;
+            --accent: #10b981;
+            --dark: #0f172a;
+            --darker: #020617;
+            --light: #e2e8f0;
+            --gray: #64748b;
+            --glow: rgba(14, 165, 233, 0.3);
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background-color: var(--darker);
+            color: var(--light);
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 背景效果 */
+        .bg-effect {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(14, 165, 233, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
+        }
+
+        /* 网格背景 */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(30, 41, 59, 0.2) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(30, 41, 59, 0.2) 1px, transparent 1px);
+            background-size: 50px 50px;
+            background-position: center center;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        /* 侧边栏 */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 80px;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(148, 163, 184, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 0;
+            z-index: 100;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .sidebar:hover {
+            width: 200px;
+        }
+
+        .sidebar:hover .label {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .logo {
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 0 15px;
+            width: 100%;
+        }
+
+        .logo-icon {
+            font-size: 1.8em;
+            color: var(--primary);
+            flex-shrink: 0;
+        }
+
+        .logo-text {
+            font-size: 1.2em;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar:hover .logo-text {
+            opacity: 1;
+        }
+
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            padding: 0 10px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(14, 165, 233, 0.1), transparent);
+            transition: left 0.7s ease;
+        }
+
+        .nav-item:hover::before {
+            left: 100%;
+        }
+
+        .nav-item:hover {
+            background: rgba(30, 41, 59, 0.7);
+            transform: translateX(5px);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(14, 165, 233, 0.2), rgba(139, 92, 246, 0.2));
+            border-left: 3px solid var(--primary);
+        }
+
+        .icon {
+            font-size: 1.3em;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
         .python .icon {
             background: rgba(49, 120, 198, 0.2);
             color: #3776ab;
