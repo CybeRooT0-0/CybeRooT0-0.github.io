@@ -87,10 +87,23 @@
 
         .sidebar:hover .label {
             opacity: 1;
+            transform: translateX(0);
+        }
+
+        .logo {
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 0 15px;
+            width: 100%;
         }
 
         .logo-icon {
             font-size: 1.8em;
+            color: var(--primary);
+            flex-shrink: 0;
+        }
 
         .logo-text {
             font-size: 1.2em;
@@ -164,6 +177,11 @@
             transition: all 0.3s ease;
         }
 
+        .ramworld .icon {
+            background: rgba(14, 165, 233, 0.2);
+            color: var(--primary);
+        }
+
         .python .icon {
             background: rgba(49, 120, 198, 0.2);
             color: #3776ab;
@@ -177,6 +195,11 @@
         .hacker .icon {
             background: rgba(16, 185, 129, 0.2);
             color: #10b981;
+        }
+
+        .acoder .icon {
+            background: rgba(236, 72, 153, 0.2);
+            color: #ec4899;
         }
 
         .friends .icon {
@@ -231,6 +254,125 @@
             max-width: 600px;
             margin: 0 auto;
             line-height: 1.6;
+        }
+
+        /* A Coder 内容容器 */
+        .acoder-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            max-width: 900px;
+            padding: 40px;
+            z-index: 20;
+        }
+
+        .acoder-content {
+            background: rgba(30, 41, 59, 0.85);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid rgba(236, 72, 153, 0.3);
+            box-shadow: 0 20px 60px rgba(236, 72, 153, 0.1);
+        }
+
+        .acoder-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .acoder-header h1 {
+            font-size: 3em;
+            background: linear-gradient(45deg, #ec4899, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .acoder-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .acoder-card {
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(236, 72, 153, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .acoder-card::after {
+            content: '→';
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            font-size: 1.5em;
+            color: rgba(236, 72, 153, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .acoder-card:hover::after {
+            transform: translateX(5px);
+            color: #ec4899;
+        }
+
+        .acoder-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(236, 72, 153, 0.5);
+            box-shadow: 0 10px 30px rgba(236, 72, 153, 0.2);
+        }
+
+        .acoder-card-icon {
+            font-size: 2.5em;
+            color: #ec4899;
+            margin-bottom: 15px;
+        }
+
+        .acoder-card h3 {
+            font-size: 1.4em;
+            margin-bottom: 10px;
+            color: var(--light);
+        }
+
+        .acoder-card p {
+            color: var(--gray);
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .acoder-card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .tag {
+            background: rgba(236, 72, 153, 0.1);
+            color: #ec4899;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+
+        .acoder-coming-soon {
+            text-align: center;
+            padding: 30px;
+            background: rgba(236, 72, 153, 0.05);
+            border-radius: 15px;
+            border: 1px dashed rgba(236, 72, 153, 0.3);
+            margin-top: 30px;
         }
 
         /* 浮动元素 */
@@ -399,6 +541,22 @@
                 width: 250px;
                 padding: 20px;
             }
+            
+            .acoder-container {
+                padding: 20px;
+            }
+            
+            .acoder-content {
+                padding: 25px;
+            }
+            
+            .acoder-header h1 {
+                font-size: 2.5em;
+            }
+            
+            .acoder-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 480px) {
@@ -414,6 +572,14 @@
             .acmer-card {
                 width: 220px;
                 padding: 15px;
+            }
+            
+            .acoder-header h1 {
+                font-size: 2em;
+            }
+            
+            .acoder-content {
+                padding: 20px;
             }
         }
     </style>
@@ -433,7 +599,14 @@
         </div>
         
         <div class="nav-items">
-            <div class="nav-item python active" data-target="python">
+            <div class="nav-item ramworld active" data-target="ramworld">
+                <div class="icon">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="label">RamWorld</div>
+            </div>
+            
+            <div class="nav-item python" data-target="python">
                 <div class="icon">
                     <i class="fab fa-python"></i>
                 </div>
@@ -452,6 +625,13 @@
                     <i class="fas fa-user-secret"></i>
                 </div>
                 <div class="label">Hacker</div>
+            </div>
+            
+            <div class="nav-item acoder" data-target="acoder">
+                <div class="icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <div class="label">A Coder</div>
             </div>
             
             <div class="nav-item friends" data-target="friends">
@@ -491,11 +671,16 @@
     </main>
 
     <script>
-        // 移除友情链接卡片的函数
-        function removeFriendsCard() {
-            const existingCard = document.querySelector('.acmer-card');
-            if (existingCard) {
-                existingCard.remove();
+        // 移除其他页面的特定元素
+        function removePageSpecificElements() {
+            const existingAcmerCard = document.querySelector('.acmer-card');
+            if (existingAcmerCard) {
+                existingAcmerCard.remove();
+            }
+            
+            const existingAcoderContainer = document.querySelector('.acoder-container');
+            if (existingAcoderContainer) {
+                existingAcoderContainer.remove();
             }
         }
 
@@ -635,6 +820,110 @@
             window.addEventListener('resize', repositionCard);
         }
 
+        // 创建 A Coder 界面的函数
+        function createACoderContent() {
+            const acoderContainer = document.createElement('div');
+            acoderContainer.className = 'acoder-container';
+            
+            acoderContainer.innerHTML = `
+                <div class="acoder-content">
+                    <div class="acoder-header">
+                        <h1><i class="fas fa-code"></i> A Coder</h1>
+                        <p style="color: var(--gray); font-size: 1.1em;">分享软件、网站、工具和编程资源</p>
+                    </div>
+                    
+                    <div class="acoder-grid">
+                        <!-- 开发工具卡片 -->
+                        <a href="YOUR_DEV_TOOLS_LINK_HERE" target="_blank" class="acoder-card" data-link-type="dev-tools">
+                            <div class="acoder-card-icon">
+                                <i class="fas fa-laptop-code"></i>
+                            </div>
+                            <h3>开发工具</h3>
+                            <p>精选的IDE、编辑器、调试工具和开发环境配置</p>
+                            <div class="acoder-card-tags">
+                                <span class="tag">VSCode</span>
+                                <span class="tag">PyCharm</span>
+                                <span class="tag">Git</span>
+                            </div>
+                        </a>
+                        
+                        <!-- 实用网站卡片 -->
+                        <a href="YOUR_WEBSITES_LINK_HERE" target="_blank" class="acoder-card" data-link-type="websites">
+                            <div class="acoder-card-icon">
+                                <i class="fas fa-globe"></i>
+                            </div>
+                            <h3>实用网站</h3>
+                            <p>学习资源、文档、在线工具和开发者社区</p>
+                            <div class="acoder-card-tags">
+                                <span class="tag">StackOverflow</span>
+                                <span class="tag">GitHub</span>
+                                <span class="tag">MDN</span>
+                            </div>
+                        </a>
+                        
+                        <!-- 软件推荐卡片 -->
+                        <a href="YOUR_SOFTWARE_LINK_HERE" target="_blank" class="acoder-card" data-link-type="software">
+                            <div class="acoder-card-icon">
+                                <i class="fas fa-box"></i>
+                            </div>
+                            <h3>软件推荐</h3>
+                            <p>提升效率的生产力工具、实用软件和系统增强</p>
+                            <div class="acoder-card-tags">
+                                <span class="tag">效率工具</span>
+                                <span class="tag">系统软件</span>
+                                <span class="tag">实用程序</span>
+                            </div>
+                        </a>
+                        
+                        <!-- 学习资源卡片 -->
+                        <a href="YOUR_LEARNING_LINK_HERE" target="_blank" class="acoder-card" data-link-type="learning">
+                            <div class="acoder-card-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <h3>学习资源</h3>
+                            <p>编程教程、在线课程、技术书籍和文档</p>
+                            <div class="acoder-card-tags">
+                                <span class="tag">教程</span>
+                                <span class="tag">文档</span>
+                                <span class="tag">书籍</span>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <div class="acoder-coming-soon">
+                        <h3 style="color: #ec4899; margin-bottom: 10px;">
+                            <i class="fas fa-rocket"></i> 更多内容即将到来
+                        </h3>
+                        <p style="color: var(--gray);">
+                            我正在整理更多的软件、网站和开发资源，敬请期待！
+                        </p>
+                        <p style="color: var(--gray); margin-top: 10px; font-size: 0.9em;">
+                            有想分享的内容？欢迎联系我！
+                        </p>
+                    </div>
+                </div>
+            `;
+            
+            // 添加到页面
+            document.querySelector('.main-content').appendChild(acoderContainer);
+            
+            // 为卡片添加悬停效果
+            const cards = acoderContainer.querySelectorAll('.acoder-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                    this.style.borderColor = 'rgba(236, 72, 153, 0.5)';
+                    this.style.boxShadow = '0 10px 30px rgba(236, 72, 153, 0.2)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.borderColor = 'rgba(236, 72, 153, 0.2)';
+                    this.style.boxShadow = 'none';
+                });
+            });
+        }
+
         // 侧边栏导航交互
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', function() {
@@ -652,36 +941,53 @@
                 // 根据目标显示不同内容
                 const welcomeText = document.querySelector('.welcome-text');
                 const subtitle = document.querySelector('.subtitle');
+                const welcomeContainer = document.querySelector('.welcome-container');
+                const footer = document.querySelector('.footer');
+                
+                // 移除其他页面的元素
+                removePageSpecificElements();
+                
+                // 显示欢迎容器和页脚
+                welcomeContainer.style.display = 'block';
+                footer.style.display = 'block';
                 
                 switch(target) {
+                    case 'ramworld':
+                        welcomeText.innerHTML = "Hello,<br>Welcome to RamWorld";
+                        subtitle.textContent = "探索技术世界，记录学习历程，分享编程心得";
+                        break;
+                        
                     case 'python':
                         welcomeText.innerHTML = "Python<br>编程世界";
                         subtitle.textContent = "带PY不老铁";
-                        removeFriendsCard();
                         break;
                         
                     case 'linux':
                         welcomeText.innerHTML = "Linux<br>系统世界";
-                        subtitle.textContent = "我有个朋友，打算竞，不玩linux，然后四级挂了";
-                        removeFriendsCard();
+                        subtitle.textContent = "我有个朋友，不玩linux，然后四级挂了";
                         break;
                         
                     case 'hacker':
                         welcomeText.innerHTML = "Hacker<br>安全领域";
                         subtitle.textContent = "你也想成为黑调的迪客？";
-                        removeFriendsCard();
+                        break;
+                        
+                    case 'acoder':
+                        // 隐藏欢迎文本和页脚
+                        welcomeContainer.style.display = 'none';
+                        footer.style.display = 'none';
+                        // 创建A Coder内容
+                        createACoderContent();
                         break;
                         
                     case 'friends':
-                        welcomeText.innerHTML = "友情链接<br>ACMer伙伴";
-                        removeFriendsCard();
+                        welcomeText.innerHTML = "友情链接";
                         createFriendsCard();
                         break;
                         
                     default:
                         welcomeText.innerHTML = "Hello,<br>Welcome to RamWorld";
                         subtitle.textContent = "探索技术世界，记录学习历程，分享编程心得";
-                        removeFriendsCard();
                 }
             });
         });
@@ -729,16 +1035,4 @@
         });
     </script>
 </body>
-</html>            color: var(--primary);
-            flex-shrink: 0;
-        }
-            transform: translateX(0);
-        }
-            width: 100%;
-        .logo {
-            margin-bottom: 40px;
-            padding: 0 15px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-
+</html>
