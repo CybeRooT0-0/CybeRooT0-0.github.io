@@ -1,0 +1,1685 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python学习日志</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --border-color: #30363d;
+            --text-primary: #c9d1d9;
+            --text-secondary: #8b949e;
+            --accent-color: #58a6ff;
+            --accent-secondary: #238636;
+            --danger-color: #f85149;
+            --warning-color: #d29922;
+            --code-bg: #1e1e1e;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            flex: 1;
+            max-width: 1600px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* 头部样式 */
+        header {
+            background-color: var(--bg-secondary);
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo i {
+            color: var(--accent-color);
+            font-size: 2rem;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            background: linear-gradient(90deg, var(--accent-color), #9d6cff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .mode-indicator {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .mode-indicator.reader {
+            background-color: var(--warning-color);
+            color: var(--bg-primary);
+        }
+
+        .mode-indicator.editor {
+            background-color: var(--accent-secondary);
+            color: white;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        /* 搜索框样式 */
+        .search-container {
+            position: relative;
+            min-width: 200px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.6rem 2.5rem 0.6rem 1rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        /* 按钮样式 */
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            background-color: var(--border-color);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background-color: var(--accent-secondary);
+            border-color: var(--accent-secondary);
+        }
+
+        .btn-primary:hover {
+            background-color: #2ea043;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            border-color: var(--danger-color);
+        }
+
+        .btn-danger:hover {
+            background-color: #da3633;
+        }
+
+        .btn-readonly {
+            background-color: var(--warning-color);
+            border-color: var(--warning-color);
+            color: var(--bg-primary);
+        }
+
+        .btn-readonly:hover {
+            background-color: #bb8009;
+        }
+
+        /* 侧边栏样式 */
+        .sidebar {
+            width: 300px;
+            background-color: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            padding: 1.5rem;
+            overflow-y: auto;
+            height: calc(100vh - 80px);
+            position: sticky;
+            top: 0;
+        }
+
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar h2 {
+            font-size: 1.3rem;
+            color: var(--text-primary);
+        }
+
+        .search-info {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 10px;
+            padding: 8px;
+            background-color: var(--bg-tertiary);
+            border-radius: 4px;
+            display: none;
+        }
+
+        .log-list {
+            list-style: none;
+        }
+
+        .log-item {
+            padding: 1rem;
+            margin-bottom: 0.8rem;
+            background-color: var(--bg-tertiary);
+            border-radius: 6px;
+            border-left: 4px solid var(--accent-color);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .log-item:hover {
+            background-color: var(--border-color);
+            transform: translateX(5px);
+        }
+
+        .log-item.active {
+            border-left-color: var(--accent-secondary);
+            background-color: rgba(35, 134, 54, 0.1);
+        }
+
+        .log-item.hidden-by-search {
+            display: none;
+        }
+
+        .log-date {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+        }
+
+        .log-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .log-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 8px;
+        }
+
+        .tag {
+            background-color: var(--bg-primary);
+            color: var(--text-secondary);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+        }
+
+        /* 主内容区域 */
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            height: calc(100vh - 80px);
+        }
+
+        .log-editor {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .editor-header {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .title-input {
+            background-color: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-size: 2rem;
+            font-weight: 700;
+            width: 100%;
+            padding: 0.5rem 0;
+        }
+
+        .title-input:focus {
+            outline: none;
+            border-bottom: 1px solid var(--accent-color);
+        }
+
+        .title-input.readonly {
+            border: none;
+            pointer-events: none;
+            background-color: transparent;
+        }
+
+        .meta-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .date-input {
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.5rem;
+            border-radius: 6px;
+        }
+
+        .date-input.readonly {
+            border: none;
+            background-color: transparent;
+            padding-left: 0;
+            pointer-events: none;
+        }
+
+        .tag-input {
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.5rem;
+            border-radius: 6px;
+            flex: 1;
+            max-width: 300px;
+        }
+
+        .tag-input.readonly {
+            border: none;
+            background-color: transparent;
+            padding-left: 0;
+            pointer-events: none;
+        }
+
+        .editor-toolbar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+        }
+
+        .editor-toolbar.readonly {
+            display: none;
+        }
+
+        .toolbar-btn {
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.5rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .toolbar-btn:hover {
+            background-color: var(--border-color);
+        }
+
+        .toolbar-btn.readonly {
+            display: none;
+        }
+
+        .content-input {
+            flex: 1;
+            background-color: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1rem;
+            line-height: 1.7;
+            resize: none;
+            padding: 1rem;
+            border-radius: 6px;
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+        }
+
+        .content-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        .content-input.readonly {
+            border: none;
+            background-color: transparent;
+            pointer-events: none;
+        }
+
+        .code-section {
+            margin-top: 1.5rem;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .code-header {
+            background-color: var(--code-bg);
+            padding: 0.8rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .code-header span {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+        }
+
+        .language-select {
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.3rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        .language-select.readonly {
+            display: none;
+        }
+
+        pre {
+            margin: 0;
+            border-radius: 0 0 6px 6px;
+        }
+
+        code {
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+        }
+
+        .hljs {
+            background-color: var(--code-bg) !important;
+            padding: 1.5rem !important;
+        }
+
+        /* 代码编辑区域样式 */
+        .code-editor-area {
+            background-color: var(--code-bg);
+            padding: 1rem;
+            border-radius: 0 0 6px 6px;
+            display: none;
+        }
+
+        .code-editor {
+            width: 100%;
+            min-height: 300px;
+            background-color: var(--code-bg);
+            color: var(--text-primary);
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            border: 1px solid var(--border-color);
+            resize: vertical;
+            padding: 1rem;
+            white-space: pre;
+            overflow-x: auto;
+        }
+
+        .code-editor:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        .code-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 1rem;
+            justify-content: flex-end;
+        }
+
+        .code-actions.readonly {
+            display: none;
+        }
+
+        /* 页脚 */
+        footer {
+            background-color: var(--bg-secondary);
+            padding: 1.5rem;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                max-height: 300px;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            .main-content {
+                height: auto;
+                min-height: 70vh;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .header-controls {
+                justify-content: center;
+                width: 100%;
+            }
+
+            .search-container {
+                width: 100%;
+            }
+
+            .meta-controls {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .tag-input {
+                max-width: 100%;
+            }
+        }
+
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+            display: none;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--border-color);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <i class="fas fa-code"></i>
+            <h1>Python学习日志 <span class="mode-indicator reader" id="modeIndicator" style="display: none;">游客模式</span>
+            </h1>
+        </div>
+        <div class="header-controls">
+            <div class="search-container">
+                <input type="text" class="search-input" id="searchInput" placeholder="搜索日志或输入密钥进入编辑模式...">
+                <i class="fas fa-search search-icon"></i>
+            </div>
+            <button class="btn" id="newLogBtn" style="display: none;">
+                <i class="fas fa-plus"></i> 新建日志
+            </button>
+            <button class="btn btn-primary" id="saveLogBtn" style="display: none;">
+                <i class="fas fa-save"></i> 保存日志
+            </button>
+            <button class="btn btn-danger" id="deleteLogBtn" style="display: none;">
+                <i class="fas fa-trash"></i> 删除日志
+            </button>
+            <button class="btn btn-readonly" id="toggleReadonlyBtn" style="display: none;">
+                <i class="fas fa-lock"></i> 退出编辑
+            </button>
+        </div>
+    </header>
+
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>日志列表</h2>
+                <span id="logCount">3 篇日志</span>
+            </div>
+            <div class="search-info" id="searchInfo">
+                搜索中...
+            </div>
+            <ul class="log-list" id="logList">
+                <!-- 日志项将通过JavaScript动态生成 -->
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <div class="log-editor" id="logEditor">
+                <div class="editor-header">
+                    <input type="text" class="title-input readonly" id="logTitle" placeholder="选择日志查看内容..." readonly>
+                    <div class="meta-controls">
+                        <div>
+                            <input type="text" class="date-input readonly" id="logDate" readonly>
+                            <input type="text" class="tag-input readonly" id="logTags" readonly>
+                        </div>
+                        <div class="editor-actions">
+                            <button class="btn" id="toggleCodeBtn" style="display: none;">
+                                <i class="fas fa-code"></i> 编辑代码
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="editor-toolbar readonly" id="editorToolbar">
+                    <button class="toolbar-btn readonly" data-format="bold">
+                        <i class="fas fa-bold"></i>
+                    </button>
+                    <button class="toolbar-btn readonly" data-format="italic">
+                        <i class="fas fa-italic"></i>
+                    </button>
+                    <button class="toolbar-btn readonly" data-format="heading">
+                        <i class="fas fa-heading"></i>
+                    </button>
+                    <button class="toolbar-btn readonly" data-format="quote">
+                        <i class="fas fa-quote-right"></i>
+                    </button>
+                    <button class="toolbar-btn readonly" data-format="link">
+                        <i class="fas fa-link"></i>
+                    </button>
+                    <button class="toolbar-btn readonly" data-format="list">
+                        <i class="fas fa-list-ul"></i>
+                    </button>
+                    <button class="toolbar-btn readonly" data-format="code">
+                        <i class="fas fa-code"></i>
+                    </button>
+                </div>
+
+                <textarea class="content-input readonly" id="logContent" placeholder="选择日志查看内容..." readonly></textarea>
+
+                <div class="code-section" id="codeSection">
+                    <div class="code-header">
+                        <div style="flex: 1;">
+                            <span><i class="fas fa-code"></i> Python代码示例</span>
+                            <span id="codeFilePath"
+                                style="margin-left: 15px; font-size: 0.85rem; color: var(--text-secondary); display: none;">
+                                <i class="fas fa-file-code"></i> <span id="codeFilePathText"></span>
+                            </span>
+                        </div>
+                        <div>
+                            <select class="language-select readonly" id="languageSelect" style="display: none;">
+                                <option value="python">Python</option>
+                                <option value="javascript">JavaScript</option>
+                                <option value="html">HTML</option>
+                                <option value="css">CSS</option>
+                                <option value="bash">Bash/Shell</option>
+                            </select>
+                            <button class="btn" id="importCodeBtn"
+                                style="display: none; margin-left: 10px; padding: 0.3rem 0.8rem;">
+                                <i class="fas fa-file-import"></i> 导入文件
+                            </button>
+                            <button class="btn" id="exportCodeBtn"
+                                style="display: none; margin-left: 10px; padding: 0.3rem 0.8rem;">
+                                <i class="fas fa-file-export"></i> 导出文件
+                            </button>
+                            <button class="btn" id="editCodeBtn"
+                                style="display: none; margin-left: 10px; padding: 0.3rem 0.8rem;">
+                                <i class="fas fa-edit"></i> 编辑代码
+                            </button>
+                            <button class="btn" id="unlinkCodeBtn"
+                                style="display: none; margin-left: 10px; padding: 0.3rem 0.8rem;">
+                                <i class="fas fa-unlink"></i> 取消关联
+                            </button>
+                        </div>
+                    </div>
+                    <input type="file" id="codeFileInput" accept=".py,.js,.html,.css,.sh,.txt" style="display: none;">
+
+                    <!-- 代码显示区域（只读，用于高亮） -->
+                    <pre id="codeDisplayContainer"
+                        style="margin: 0; background-color: var(--code-bg);"><code class="language-python" id="codeDisplay"></code></pre>
+
+                    <!-- 代码编辑区域（默认隐藏） -->
+                    <div id="codeEditorContainer" class="code-editor-area">
+                        <textarea id="codeEditor" class="code-editor"></textarea>
+                        <div class="code-actions readonly" id="codeActions">
+                            <button class="btn btn-primary" id="saveCodeBtn">
+                                <i class="fas fa-check"></i> 保存代码
+                            </button>
+                            <button class="btn" id="cancelCodeBtn">
+                                <i class="fas fa-times"></i> 取消
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="empty-state" id="emptyState">
+                <i class="fas fa-file-alt"></i>
+                <h3>暂无日志</h3>
+                <p>在搜索框输入编辑密钥进入编辑模式创建新日志</p>
+            </div>
+        </main>
+    </div>
+
+    <footer>
+        <p>Python学习日志 &copy; 2023 | <span id="footerMode">游客模式 - 仅可浏览内容</span></p>
+        <p>提示：在搜索框中输入编辑密钥 <code>python2024</code> 可进入编辑模式</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>
+        // 初始化代码高亮
+        hljs.highlightAll();
+
+        // 编辑密钥
+        const EDIT_SECRET_KEY = "wajdalndifjaw;&@$!jdsnflonenjefNSADAK;JNLmnkskanfok[wnoef;en";
+
+        // 模拟的日志数据
+        let logs = [
+            {
+                id: 1,
+                title: "Python列表与字典详解",
+                date: "2023-10-15",
+                content: "今天学习了Python中列表和字典的进阶用法。\n\n列表推导式非常强大，可以简洁地创建列表：\n```python\nsquares = [x**2 for x in range(10)]\n```\n\n字典的get()方法可以避免KeyError异常，提供默认值。",
+                tags: ["数据结构", "基础", "列表", "字典"],
+                code: `# 列表推导式示例
+numbers = [1, 2, 3, 4, 5]
+squared = [n**2 for n in numbers]
+print(squared)  # 输出: [1, 4, 9, 16, 25]
+
+# 字典操作示例
+student = {"name": "张三", "age": 20, "major": "计算机科学"}
+# 安全地获取值
+score = student.get("score", "暂无成绩")
+print(f"成绩: {score}")`
+            },
+            {
+                id: 2,
+                title: "Python函数装饰器入门",
+                date: "2023-10-10",
+                content: "装饰器是Python中非常强大的功能，可以在不修改原函数代码的情况下增加功能。\n\n装饰器本质上是一个接受函数作为参数并返回函数的函数。\n\n常见用途：日志记录、性能测试、权限校验等。",
+                tags: ["高级特性", "函数", "装饰器"],
+                code: `import time
+import functools
+
+# 定义一个简单的装饰器
+def timer(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        start_time = time.time()
+        result = func(*args, **kwargs)
+        end_time = time.time()
+        print(f"{func.__name__} 执行时间: {end_time - start_time:.4f}秒")
+        return result
+    return wrapper
+
+# 使用装饰器
+@timer
+def slow_function():
+    time.sleep(1)
+    print("函数执行完成")
+
+# 调用被装饰的函数
+slow_function()`
+            },
+            {
+                id: 3,
+                title: "Python面向对象编程基础",
+                date: "2023-10-05",
+                content: "学习了Python面向对象编程的基本概念：类、对象、继承和多态。\n\nPython支持多重继承，但需要谨慎使用。\n\n类方法、静态方法和实例方法的区别很重要。",
+                tags: ["OOP", "类", "对象", "继承"],
+                code: `# 定义一个简单的类
+class Animal:
+    def __init__(self, name, species):
+        self.name = name
+        self.species = species
+    
+    def speak(self):
+        return "Some generic sound"
+    
+    def __str__(self):
+        return f"{self.name} ({self.species})"
+
+# 继承示例
+class Dog(Animal):
+    def __init__(self, name, breed):
+        super().__init__(name, "Dog")
+        self.breed = breed
+    
+    def speak(self):
+        return "Woof!"
+
+# 创建对象
+my_dog = Dog("Buddy", "Golden Retriever")
+print(my_dog)  # 输出: Buddy (Dog)
+print(my_dog.speak())  # 输出: Woof!`
+            }
+        ];
+
+        // 状态变量
+        let currentLogId = 1;
+        let isEditing = false;
+        let isEditMode = false; // 是否处于编辑模式
+        let isCodeEditing = false; // 代码编辑模式
+        let searchQuery = "";
+
+        // DOM元素
+        const logList = document.getElementById('logList');
+        const logTitle = document.getElementById('logTitle');
+        const logDate = document.getElementById('logDate');
+        const logTags = document.getElementById('logTags');
+        const logContent = document.getElementById('logContent');
+        const languageSelect = document.getElementById('languageSelect');
+        const codeSection = document.getElementById('codeSection');
+        const emptyState = document.getElementById('emptyState');
+        const logEditor = document.getElementById('logEditor');
+        const logCount = document.getElementById('logCount');
+        const modeIndicator = document.getElementById('modeIndicator');
+        const footerMode = document.getElementById('footerMode');
+        const searchInput = document.getElementById('searchInput');
+        const searchInfo = document.getElementById('searchInfo');
+
+        // 新增的代码编辑相关DOM元素
+        const editCodeBtn = document.getElementById('editCodeBtn');
+        const codeDisplay = document.getElementById('codeDisplay');
+        const codeDisplayContainer = document.getElementById('codeDisplayContainer');
+        const codeEditor = document.getElementById('codeEditor');
+        const codeEditorContainer = document.getElementById('codeEditorContainer');
+        const saveCodeBtn = document.getElementById('saveCodeBtn');
+        const cancelCodeBtn = document.getElementById('cancelCodeBtn');
+        const toggleCodeBtn = document.getElementById('toggleCodeBtn');
+        const editorToolbar = document.getElementById('editorToolbar');
+        const codeActions = document.getElementById('codeActions');
+        const importCodeBtn = document.getElementById('importCodeBtn');
+        const exportCodeBtn = document.getElementById('exportCodeBtn');
+        const unlinkCodeBtn = document.getElementById('unlinkCodeBtn');
+        const codeFileInput = document.getElementById('codeFileInput');
+        const codeFilePath = document.getElementById('codeFilePath');
+        const codeFilePathText = document.getElementById('codeFilePathText');
+
+        // 按钮
+        const newLogBtn = document.getElementById('newLogBtn');
+        const saveLogBtn = document.getElementById('saveLogBtn');
+        const deleteLogBtn = document.getElementById('deleteLogBtn');
+        const toggleReadonlyBtn = document.getElementById('toggleReadonlyBtn');
+        const toolbarBtns = document.querySelectorAll('.toolbar-btn');
+
+        // 从localStorage加载数据
+        function loadFromLocalStorage() {
+            const savedLogs = localStorage.getItem('pythonLogs');
+            if (savedLogs) {
+                logs = JSON.parse(savedLogs);
+                if (logs.length > 0) {
+                    currentLogId = logs[0].id;
+                }
+            }
+        }
+
+        // 保存到localStorage
+        function saveToLocalStorage() {
+            localStorage.setItem('pythonLogs', JSON.stringify(logs));
+        }
+
+        // 初始化
+        function init() {
+            loadFromLocalStorage();
+            renderLogList();
+            selectLog(currentLogId);
+            updateEditorVisibility();
+
+            // 初始化时隐藏模式指示器和退出编辑按钮（游客模式）
+            modeIndicator.style.display = 'none';
+            toggleReadonlyBtn.style.display = 'none';
+        }
+
+        // 搜索日志
+        function searchLogs(query) {
+            searchQuery = query.toLowerCase().trim();
+
+            if (searchQuery === EDIT_SECRET_KEY) {
+                // 进入编辑模式
+                enterEditMode();
+                searchInfo.style.display = 'none';
+                searchInput.value = '';
+                return;
+            }
+
+            if (searchQuery === '') {
+                // 清空搜索，显示所有日志
+                document.querySelectorAll('.log-item').forEach(item => {
+                    item.classList.remove('hidden-by-search');
+                });
+                searchInfo.style.display = 'none';
+                logCount.textContent = `${logs.length} 篇日志`;
+            } else {
+                // 执行搜索
+                let matchCount = 0;
+                document.querySelectorAll('.log-item').forEach(item => {
+                    const logId = parseInt(item.dataset.id);
+                    const log = logs.find(log => log.id === logId);
+
+                    if (log) {
+                        const titleMatch = log.title.toLowerCase().includes(searchQuery);
+                        const contentMatch = log.content.toLowerCase().includes(searchQuery);
+                        const tagMatch = log.tags.some(tag => tag.toLowerCase().includes(searchQuery));
+
+                        if (titleMatch || contentMatch || tagMatch) {
+                            item.classList.remove('hidden-by-search');
+                            matchCount++;
+                        } else {
+                            item.classList.add('hidden-by-search');
+                        }
+                    }
+                });
+
+                searchInfo.style.display = 'block';
+                searchInfo.textContent = matchCount > 0
+                    ? `找到 ${matchCount} 篇包含 "${searchQuery}" 的日志`
+                    : `未找到包含 "${searchQuery}" 的日志`;
+                searchInfo.style.color = matchCount > 0 ? 'var(--accent-color)' : 'var(--danger-color)';
+
+                logCount.textContent = `${matchCount} 篇日志`;
+            }
+        }
+
+        // 进入编辑模式
+        function enterEditMode() {
+            isEditMode = true;
+
+            // 更新界面显示 - 显示模式指示器
+            modeIndicator.textContent = "编辑模式";
+            modeIndicator.className = "mode-indicator editor";
+            modeIndicator.style.display = 'inline-block';
+            footerMode.textContent = "编辑模式 - 可以创建和修改日志";
+
+            // 显示编辑按钮
+            newLogBtn.style.display = 'flex';
+            saveLogBtn.style.display = 'flex';
+            deleteLogBtn.style.display = 'flex';
+            toggleCodeBtn.style.display = 'flex';
+            editCodeBtn.style.display = 'inline-block';
+            importCodeBtn.style.display = 'inline-block';
+            exportCodeBtn.style.display = 'inline-block';
+            languageSelect.style.display = 'block';
+            editorToolbar.classList.remove('readonly');
+            codeActions.classList.remove('readonly');
+
+            // 显示退出编辑按钮
+            toggleReadonlyBtn.style.display = 'flex';
+
+            // 更新工具栏按钮
+            toolbarBtns.forEach(btn => {
+                btn.classList.remove('readonly');
+            });
+
+            // 更新输入框为可编辑状态
+            logTitle.classList.remove('readonly');
+            logTitle.readOnly = false;
+
+            logDate.classList.remove('readonly');
+            logDate.readOnly = false;
+            logDate.type = 'date';
+
+            logTags.classList.remove('readonly');
+            logTags.readOnly = false;
+
+            logContent.classList.remove('readonly');
+            logContent.readOnly = false;
+
+            // 设置当前日期
+            const today = new Date().toISOString().split('T')[0];
+            if (logDate.value === '') {
+                logDate.value = today;
+            }
+
+            // 更新按钮文本
+            toggleReadonlyBtn.innerHTML = '<i class="fas fa-lock"></i> 退出编辑';
+            toggleReadonlyBtn.className = "btn btn-readonly";
+
+            // 显示提示
+            showNotification("已进入编辑模式", "success");
+        }
+
+        // 退出编辑模式
+        function exitEditMode() {
+            isEditMode = false;
+
+            // 更新界面显示 - 隐藏模式指示器
+            modeIndicator.style.display = 'none';
+            footerMode.textContent = "游客模式 - 仅可浏览内容";
+
+            // 隐藏编辑按钮
+            newLogBtn.style.display = 'none';
+            saveLogBtn.style.display = 'none';
+            deleteLogBtn.style.display = 'none';
+            toggleCodeBtn.style.display = 'none';
+            editCodeBtn.style.display = 'none';
+            importCodeBtn.style.display = 'none';
+            exportCodeBtn.style.display = 'none';
+            unlinkCodeBtn.style.display = 'none';
+            languageSelect.style.display = 'none';
+            editorToolbar.classList.add('readonly');
+            codeActions.classList.add('readonly');
+
+            // 隐藏退出编辑按钮
+            toggleReadonlyBtn.style.display = 'none';
+
+            // 更新工具栏按钮
+            toolbarBtns.forEach(btn => {
+                btn.classList.add('readonly');
+            });
+
+            // 更新输入框为只读状态
+            logTitle.classList.add('readonly');
+            logTitle.readOnly = true;
+
+            logDate.classList.add('readonly');
+            logDate.readOnly = true;
+            logDate.type = 'text';
+
+            logTags.classList.add('readonly');
+            logTags.readOnly = true;
+
+            logContent.classList.add('readonly');
+            logContent.readOnly = true;
+
+            // 如果正在编辑代码，退出编辑
+            if (isCodeEditing) {
+                cancelCodeEdit();
+            }
+
+            // 清空搜索框
+            searchInput.value = '';
+            searchInfo.style.display = 'none';
+
+            // 显示提示
+            showNotification("已退出编辑模式", "info");
+        }
+
+        // 显示通知
+        function showNotification(message, type) {
+            // 创建通知元素
+            const notification = document.createElement('div');
+            notification.textContent = message;
+            notification.style.position = 'fixed';
+            notification.style.top = '20px';
+            notification.style.right = '20px';
+            notification.style.padding = '12px 20px';
+            notification.style.borderRadius = '6px';
+            notification.style.fontWeight = '500';
+            notification.style.zIndex = '1000';
+            notification.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.3)';
+
+            if (type === 'success') {
+                notification.style.backgroundColor = 'var(--accent-secondary)';
+                notification.style.color = 'white';
+            } else if (type === 'error') {
+                notification.style.backgroundColor = 'var(--danger-color)';
+                notification.style.color = 'white';
+            } else {
+                notification.style.backgroundColor = 'var(--warning-color)';
+                notification.style.color = 'var(--bg-primary)';
+            }
+
+            document.body.appendChild(notification);
+
+            // 3秒后移除通知
+            setTimeout(() => {
+                notification.style.transition = 'opacity 0.5s';
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 500);
+            }, 3000);
+        }
+
+        // 初始化日志列表
+        function renderLogList() {
+            logList.innerHTML = '';
+
+            logs.forEach(log => {
+                const logItem = document.createElement('li');
+                logItem.className = `log-item ${log.id === currentLogId ? 'active' : ''}`;
+                logItem.dataset.id = log.id;
+
+                const tagsHtml = log.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+
+                logItem.innerHTML = `
+                    <div class="log-date">${formatDate(log.date)}</div>
+                    <div class="log-title">${log.title}</div>
+                    <div class="log-tags">${tagsHtml}</div>
+                `;
+
+                logItem.addEventListener('click', () => {
+                    selectLog(log.id);
+                });
+
+                logList.appendChild(logItem);
+            });
+
+            logCount.textContent = `${logs.length} 篇日志`;
+        }
+
+        // 格式化日期
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('zh-CN', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        // 更新代码显示
+        function updateCodeDisplay() {
+            const log = logs.find(log => log.id === currentLogId);
+            if (log) {
+                // 如果有关联的外部文件，尝试从外部文件加载
+                if (log.codeFilePath) {
+                    loadCodeFromFile(log.codeFilePath).then(code => {
+                        if (code !== null) {
+                            codeDisplay.textContent = code;
+                            codeDisplay.className = `language-${languageSelect.value}`;
+                            hljs.highlightElement(codeDisplay);
+                            // 显示文件路径
+                            codeFilePath.style.display = 'inline';
+                            codeFilePathText.textContent = log.codeFilePath;
+                            unlinkCodeBtn.style.display = 'inline-block';
+                        } else {
+                            // 文件不存在，使用内联代码
+                            codeDisplay.textContent = log.code || '';
+                            codeDisplay.className = `language-${languageSelect.value}`;
+                            hljs.highlightElement(codeDisplay);
+                            codeFilePath.style.display = 'none';
+                            unlinkCodeBtn.style.display = 'none';
+                        }
+                    });
+                } else {
+                    // 使用内联代码
+                    codeDisplay.textContent = log.code || '';
+                    codeDisplay.className = `language-${languageSelect.value}`;
+                    hljs.highlightElement(codeDisplay);
+                    codeFilePath.style.display = 'none';
+                    unlinkCodeBtn.style.display = 'none';
+                }
+            }
+        }
+
+        // 从外部文件加载代码（从localStorage中的文件存储）
+        function loadCodeFromFile(filePath) {
+            return new Promise((resolve) => {
+                const fileStorage = JSON.parse(localStorage.getItem('codeFiles') || '{}');
+                if (fileStorage[filePath]) {
+                    resolve(fileStorage[filePath]);
+                } else {
+                    resolve(null);
+                }
+            });
+        }
+
+        // 保存代码到外部文件（保存到localStorage中的文件存储）
+        function saveCodeToFile(filePath, code) {
+            const fileStorage = JSON.parse(localStorage.getItem('codeFiles') || '{}');
+            fileStorage[filePath] = code;
+            localStorage.setItem('codeFiles', JSON.stringify(fileStorage));
+        }
+
+        // 删除外部文件
+        function deleteCodeFile(filePath) {
+            const fileStorage = JSON.parse(localStorage.getItem('codeFiles') || '{}');
+            delete fileStorage[filePath];
+            localStorage.setItem('codeFiles', JSON.stringify(fileStorage));
+        }
+
+        // 选择日志
+        function selectLog(id) {
+            currentLogId = id;
+            const log = logs.find(log => log.id === id);
+
+            if (log) {
+                logTitle.value = log.title;
+                logDate.value = log.date;
+                logTags.value = log.tags.join(', ');
+                logContent.value = log.content;
+
+                // 更新代码显示
+                updateCodeDisplay();
+
+                // 更新文件路径显示
+                if (log.codeFilePath) {
+                    codeFilePath.style.display = 'inline';
+                    codeFilePathText.textContent = log.codeFilePath;
+                    if (isEditMode) {
+                        unlinkCodeBtn.style.display = 'inline-block';
+                    }
+                } else {
+                    codeFilePath.style.display = 'none';
+                    unlinkCodeBtn.style.display = 'none';
+                }
+
+                // 确保不在代码编辑模式
+                if (isCodeEditing) {
+                    codeEditorContainer.style.display = 'none';
+                    codeDisplayContainer.style.display = 'block';
+                    editCodeBtn.innerHTML = '<i class="fas fa-edit"></i> 编辑代码';
+                    isCodeEditing = false;
+                }
+
+                // 更新日志列表中的活动项
+                document.querySelectorAll('.log-item').forEach(item => {
+                    item.classList.toggle('active', parseInt(item.dataset.id) === id);
+                });
+
+                isEditing = true;
+                updateEditorVisibility();
+            }
+        }
+
+        // 更新编辑器可见性
+        function updateEditorVisibility() {
+            if (logs.length > 0) {
+                emptyState.style.display = 'none';
+                logEditor.style.display = 'flex';
+            } else {
+                emptyState.style.display = 'block';
+                logEditor.style.display = 'none';
+            }
+        }
+
+        // 创建新日志
+        function createNewLog() {
+            if (!isEditMode) return;
+
+            const newId = logs.length > 0 ? Math.max(...logs.map(log => log.id)) + 1 : 1;
+
+            const newLog = {
+                id: newId,
+                title: "新的Python学习日志",
+                date: new Date().toISOString().split('T')[0],
+                content: "在此记录您的Python学习内容...\n\n您可以使用Markdown格式来编写。\n\n代码示例可以放在下面的代码块中。",
+                tags: ["新日志"],
+                code: "# 在这里编写您的Python代码示例\nprint('Hello, Python学习日志!')"
+            };
+
+            logs.unshift(newLog);
+            currentLogId = newId;
+
+            renderLogList();
+            selectLog(newId);
+            saveToLocalStorage();
+
+            // 滚动到顶部
+            document.querySelector('.main-content').scrollTop = 0;
+
+            showNotification("已创建新日志", "success");
+        }
+
+        // 保存当前日志
+        function saveCurrentLog() {
+            if (!isEditMode || !isEditing) return;
+
+            const logIndex = logs.findIndex(log => log.id === currentLogId);
+
+            if (logIndex !== -1) {
+                // 更新现有日志
+                logs[logIndex] = {
+                    ...logs[logIndex],
+                    title: logTitle.value,
+                    date: logDate.value,
+                    tags: logTags.value.split(',').map(tag => tag.trim()).filter(tag => tag),
+                    content: logContent.value,
+                    code: logs[logIndex].code,  // 保持现有代码不变
+                    codeFilePath: logs[logIndex].codeFilePath || null  // 保持文件路径
+                };
+            } else {
+                // 创建新日志
+                const newLog = {
+                    id: currentLogId,
+                    title: logTitle.value,
+                    date: logDate.value,
+                    tags: logTags.value.split(',').map(tag => tag.trim()).filter(tag => tag),
+                    content: logContent.value,
+                    code: "# 在这里编写您的Python代码示例\nprint('Hello, Python学习日志!')",
+                    codeFilePath: null
+                };
+
+                logs.push(newLog);
+            }
+
+            renderLogList();
+            saveToLocalStorage();
+
+            // 刷新当前日志显示，确保保存后的内容正确更新
+            selectLog(currentLogId);
+
+            // 显示保存反馈
+            const originalText = saveLogBtn.innerHTML;
+            saveLogBtn.innerHTML = '<i class="fas fa-check"></i> 已保存';
+            saveLogBtn.style.backgroundColor = '#238636';
+
+            setTimeout(() => {
+                saveLogBtn.innerHTML = originalText;
+                saveLogBtn.style.backgroundColor = '';
+            }, 1500);
+
+            showNotification("日志已保存", "success");
+        }
+
+        // 删除当前日志
+        function deleteCurrentLog() {
+            if (!isEditMode || !isEditing || logs.length === 0) return;
+
+            if (confirm("确定要删除这篇日志吗？此操作无法撤销。")) {
+                const logIndex = logs.findIndex(log => log.id === currentLogId);
+
+                if (logIndex !== -1) {
+                    logs.splice(logIndex, 1);
+
+                    // 选择另一篇日志或显示空状态
+                    if (logs.length > 0) {
+                        currentLogId = logs[0].id;
+                        selectLog(currentLogId);
+                    } else {
+                        currentLogId = null;
+                        isEditing = false;
+                    }
+
+                    renderLogList();
+                    saveToLocalStorage();
+                    showNotification("日志已删除", "success");
+                }
+            }
+        }
+
+        // 切换代码编辑模式
+        function toggleCodeEditMode() {
+            if (!isEditMode) return;
+
+            const log = logs.find(log => log.id === currentLogId);
+            if (!log) return;
+
+            if (!isCodeEditing) {
+                // 进入编辑模式
+                // 如果有关联的外部文件，从文件加载；否则使用内联代码
+                if (log.codeFilePath) {
+                    loadCodeFromFile(log.codeFilePath).then(code => {
+                        codeEditor.value = code !== null ? code : (log.code || '');
+                        codeEditorContainer.style.display = 'block';
+                        codeDisplayContainer.style.display = 'none';
+                        editCodeBtn.innerHTML = '<i class="fas fa-eye"></i> 查看代码';
+                        isCodeEditing = true;
+                    });
+                } else {
+                    codeEditor.value = log.code || '';
+                    codeEditorContainer.style.display = 'block';
+                    codeDisplayContainer.style.display = 'none';
+                    editCodeBtn.innerHTML = '<i class="fas fa-eye"></i> 查看代码';
+                    isCodeEditing = true;
+                }
+            } else {
+                // 退出编辑模式
+                cancelCodeEdit();
+            }
+        }
+
+        // 保存代码
+        function saveCode() {
+            const logIndex = logs.findIndex(log => log.id === currentLogId);
+            if (logIndex !== -1) {
+                const codeContent = codeEditor.value;
+
+                // 如果有关联的外部文件，保存到外部文件
+                if (logs[logIndex].codeFilePath) {
+                    saveCodeToFile(logs[logIndex].codeFilePath, codeContent);
+                } else {
+                    // 否则保存为内联代码
+                    logs[logIndex].code = codeContent;
+                }
+
+                saveToLocalStorage();
+
+                // 显示成功反馈
+                const originalText = saveCodeBtn.innerHTML;
+                saveCodeBtn.innerHTML = '<i class="fas fa-check"></i> 已保存';
+                saveCodeBtn.style.backgroundColor = '#238636';
+
+                setTimeout(() => {
+                    saveCodeBtn.innerHTML = originalText;
+                    saveCodeBtn.style.backgroundColor = '';
+                }, 1500);
+
+                // 更新显示并退出编辑模式
+                updateCodeDisplay();
+
+                setTimeout(() => {
+                    codeEditorContainer.style.display = 'none';
+                    codeDisplayContainer.style.display = 'block';
+                    editCodeBtn.innerHTML = '<i class="fas fa-edit"></i> 编辑代码';
+                    isCodeEditing = false;
+                }, 800);
+
+                showNotification("代码已保存", "success");
+            }
+        }
+
+        // 导入外部文件
+        function importCodeFile() {
+            if (!isEditMode) return;
+
+            codeFileInput.click();
+        }
+
+        // 处理文件导入
+        function handleFileImport(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const fileContent = e.target.result;
+                const fileName = file.name;
+                const filePath = `scripts/${fileName}`;
+
+                // 保存文件内容到localStorage
+                saveCodeToFile(filePath, fileContent);
+
+                // 关联到当前日志
+                const logIndex = logs.findIndex(log => log.id === currentLogId);
+                if (logIndex !== -1) {
+                    logs[logIndex].codeFilePath = filePath;
+                    // 也保存一份到内联代码作为备份
+                    logs[logIndex].code = fileContent;
+                    saveToLocalStorage();
+
+                    // 更新显示
+                    updateCodeDisplay();
+                    showNotification(`已导入文件: ${fileName}`, "success");
+                }
+            };
+            reader.readAsText(file);
+
+            // 清空input，以便可以重复选择同一文件
+            event.target.value = '';
+        }
+
+        // 导出代码为文件
+        function exportCodeFile() {
+            if (!isEditMode) return;
+
+            const log = logs.find(log => log.id === currentLogId);
+            if (!log) return;
+
+            // 获取代码内容
+            if (log.codeFilePath) {
+                loadCodeFromFile(log.codeFilePath).then(code => {
+                    const codeContent = code !== null ? code : (log.code || '');
+                    const fileName = log.codeFilePath.split('/').pop() || 'code.py';
+                    downloadCodeFile(codeContent, fileName);
+                });
+            } else {
+                const codeContent = log.code || '';
+                // 根据语言选择确定文件扩展名
+                const extMap = {
+                    'python': 'py',
+                    'javascript': 'js',
+                    'html': 'html',
+                    'css': 'css',
+                    'bash': 'sh'
+                };
+                const ext = extMap[languageSelect.value] || 'txt';
+                downloadCodeFile(codeContent, `code.${ext}`);
+            }
+        }
+
+        // 下载代码文件
+        function downloadCodeFile(content, fileName) {
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName.split('/').pop(); // 只取文件名
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showNotification("文件已导出", "success");
+        }
+
+        // 取消关联外部文件
+        function unlinkCodeFile() {
+            if (!isEditMode) return;
+
+            const logIndex = logs.findIndex(log => log.id === currentLogId);
+            if (logIndex !== -1 && logs[logIndex].codeFilePath) {
+                const filePath = logs[logIndex].codeFilePath;
+
+                // 确认取消关联
+                if (confirm(`确定要取消关联外部文件 "${filePath}" 吗？\n\n文件内容将保留为内联代码，外部文件不会被删除。`)) {
+                    // 确保内联代码有内容
+                    if (!logs[logIndex].code) {
+                        loadCodeFromFile(filePath).then(code => {
+                            if (code !== null) {
+                                logs[logIndex].code = code;
+                            }
+                            logs[logIndex].codeFilePath = null;
+                            saveToLocalStorage();
+                            updateCodeDisplay();
+                            showNotification("已取消关联外部文件", "info");
+                        });
+                    } else {
+                        logs[logIndex].codeFilePath = null;
+                        saveToLocalStorage();
+                        updateCodeDisplay();
+                        showNotification("已取消关联外部文件", "info");
+                    }
+                }
+            }
+        }
+
+        // 取消代码编辑
+        function cancelCodeEdit() {
+            codeEditorContainer.style.display = 'none';
+            codeDisplayContainer.style.display = 'block';
+            editCodeBtn.innerHTML = '<i class="fas fa-edit"></i> 编辑代码';
+            isCodeEditing = false;
+        }
+
+        // 文本格式化工具
+        function formatText(formatType) {
+            if (!isEditMode) return;
+
+            const textarea = logContent;
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const selectedText = textarea.value.substring(start, end);
+
+            let formattedText = '';
+
+            switch (formatType) {
+                case 'bold':
+                    formattedText = `**${selectedText}**`;
+                    break;
+                case 'italic':
+                    formattedText = `*${selectedText}*`;
+                    break;
+                case 'heading':
+                    formattedText = `## ${selectedText}`;
+                    break;
+                case 'quote':
+                    formattedText = `> ${selectedText}`;
+                    break;
+                case 'link':
+                    formattedText = `[${selectedText}](https://example.com)`;
+                    break;
+                case 'list':
+                    formattedText = `- ${selectedText}`;
+                    break;
+                case 'code':
+                    formattedText = `\`${selectedText}\``;
+                    break;
+            }
+
+            // 插入格式化文本
+            textarea.value = textarea.value.substring(0, start) +
+                formattedText +
+                textarea.value.substring(end);
+
+            // 重新聚焦并恢复选择
+            textarea.focus();
+            textarea.setSelectionRange(start, start + formattedText.length);
+        }
+
+        // 事件监听器
+        newLogBtn.addEventListener('click', createNewLog);
+        saveLogBtn.addEventListener('click', saveCurrentLog);
+        deleteLogBtn.addEventListener('click', deleteCurrentLog);
+        editCodeBtn.addEventListener('click', toggleCodeEditMode);
+        saveCodeBtn.addEventListener('click', saveCode);
+        cancelCodeBtn.addEventListener('click', cancelCodeEdit);
+        importCodeBtn.addEventListener('click', importCodeFile);
+        exportCodeBtn.addEventListener('click', exportCodeFile);
+        unlinkCodeBtn.addEventListener('click', unlinkCodeFile);
+        codeFileInput.addEventListener('change', handleFileImport);
+
+        // 搜索功能
+        let searchTimeout;
+        searchInput.addEventListener('input', function () {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                searchLogs(this.value);
+            }, 300);
+        });
+
+        searchInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                searchLogs(this.value);
+            }
+        });
+
+        // 切换只读/编辑模式按钮
+        toggleReadonlyBtn.addEventListener('click', function () {
+            if (isEditMode) {
+                exitEditMode();
+            } else {
+                // 如果不在编辑模式，点击按钮时提示输入密钥
+                const userKey = prompt("请输入编辑密钥：", "");
+                if (userKey === EDIT_SECRET_KEY) {
+                    enterEditMode();
+                } else if (userKey !== null) {
+                    alert("密钥错误！");
+                }
+            }
+        });
+
+        languageSelect.addEventListener('change', function () {
+            updateCodeDisplay();
+        });
+
+        // 为工具栏按钮添加事件监听器
+        toolbarBtns.forEach(btn => {
+            btn.addEventListener('click', function () {
+                const formatType = this.dataset.format;
+                formatText(formatType);
+            });
+        });
+
+        // 自动保存功能（每30秒自动保存）
+        setInterval(() => {
+            if (isEditMode && isEditing && logTitle.value.trim() !== '') {
+                saveCurrentLog();
+            }
+        }, 30000);
+
+        // 初始化
+        init();
+
+        // 添加键盘快捷键
+        document.addEventListener('keydown', function (e) {
+            // Ctrl+S 保存（仅在编辑模式下）
+            if ((e.ctrlKey || e.metaKey) && e.key === 's' && isEditMode) {
+                e.preventDefault();
+                saveCurrentLog();
+            }
+
+            // Ctrl+N 新建日志（仅在编辑模式下）
+            if ((e.ctrlKey || e.metaKey) && e.key === 'n' && isEditMode) {
+                e.preventDefault();
+                createNewLog();
+            }
+
+            // Ctrl+F 聚焦搜索框
+            if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+                e.preventDefault();
+                searchInput.focus();
+                searchInput.select();
+            }
+
+            // Esc 键退出代码编辑模式
+            if (e.key === 'Escape' && isCodeEditing) {
+                cancelCodeEdit();
+            }
+        });
+    </script>
+</body>
+
+</html>
